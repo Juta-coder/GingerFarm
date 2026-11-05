@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>โหวตเมนู Ginger Farm Kitchen</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍲</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1D2A21; --muted:#5E6B62; --line:#E3E8E1;
+  --farm:#17663A; --farm-ink:#FFFFFF; --chili:#E4532F; --mustard:#F5C93F; --tint:#F1F6EF;
+  --card:#FFFFFF; --bar:#DCEAD9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121814; --ink:#E9EFE9; --muted:#A5B2A8; --line:#2A352D;
+    --farm:#4FB477; --farm-ink:#0E1A12; --chili:#FF7A57; --mustard:#F5C93F; --tint:#1A231D;
+    --card:#18201B; --bar:#24402E; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121814; --ink:#E9EFE9; --muted:#A5B2A8; --line:#2A352D;
+  --farm:#4FB477; --farm-ink:#0E1A12; --chili:#FF7A57; --mustard:#F5C93F; --tint:#1A231D;
+  --card:#18201B; --bar:#24402E; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans Thai",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 140px}
+header{padding:36px 0 20px}
+h1{font-family:"Mali","IBM Plex Sans Thai",cursive;font-weight:700;font-size:clamp(30px,6vw,46px);line-height:1.15;margin:0 0 10px;color:var(--farm)}
+.lede{margin:0;max-width:62ch;color:var(--muted)}
+.rule{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.rule span{background:var(--tint);border-radius:999px;padding:6px 14px;font-size:14px}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;gap:6px;padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:18px}
+.tab{font:inherit;font-weight:600;border:0;background:transparent;color:var(--muted);padding:8px 14px;border-radius:10px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--farm);color:var(--farm-ink)}
+.tab:focus-visible,.dish:focus-visible,.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--mustard);outline-offset:2px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px}
+.chip{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.chip[aria-pressed="true"]{border-color:var(--farm);color:var(--farm);font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.dish{position:relative;display:flex;flex-direction:column;text-align:left;font:inherit;color:inherit;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:0;overflow:hidden;cursor:pointer}
+.dish img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--tint)}
+.dish .meta{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px;flex:1}
+.dish .th{font-weight:600;line-height:1.35}
+.dish .en{font-size:13px;color:var(--muted);line-height:1.35}
+.dish .price{margin-top:auto;padding-top:6px;font-weight:600;color:var(--farm);display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;font-weight:500;color:var(--chili)}
+.dish[aria-pressed="true"]{border-color:var(--farm);box-shadow:0 0 0 2px var(--farm)}
+.badge{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;background:var(--mustard);color:#1D2A21;font-family:"Mali",cursive;font-weight:700;font-size:20px;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.dish[aria-pressed="true"] .badge{display:flex}
+.dish[aria-disabled="true"]{opacity:.45}
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--paper);border-top:1px solid var(--line);padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px))}
+.dock-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.picked{flex:1;min-width:200px;font-size:14px;color:var(--muted)}
+.picked b{color:var(--ink)}
+.btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:12px 22px;background:var(--farm);color:var(--farm-ink);cursor:pointer}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--farm);border:1px solid var(--farm)}
+.note{background:var(--tint);border-radius:12px;padding:12px 16px;margin:0 0 18px;font-size:14px}
+.note.warn{border-left:4px solid var(--chili)}
+.sum{display:flex;gap:28px;flex-wrap:wrap;margin-bottom:22px}
+.sum div{font-size:14px;color:var(--muted)}
+.sum b{display:block;font-family:"Mali",cursive;font-size:30px;color:var(--ink);line-height:1.2}
+.rank{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.row{display:grid;grid-template-columns:28px 64px 1fr auto;gap:12px;align-items:center;padding:8px;border-radius:12px}
+.row.top{background:var(--tint)}
+.row .n{font-family:"Mali",cursive;font-weight:700;color:var(--muted);text-align:center}
+.row.top .n{color:var(--farm)}
+.row img{width:64px;height:48px;object-fit:cover;border-radius:8px}
+.row .nm{font-weight:600;line-height:1.3}
+.row .nm small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.track{height:8px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.fill{height:100%;background:var(--farm);border-radius:4px}
+.row .v{font-weight:600;white-space:nowrap}
+h2{font-family:"Mali",cursive;font-size:24px;margin:28px 0 6px;color:var(--ink)}
+.sub{color:var(--muted);margin:0 0 16px;font-size:14px}
+.voters{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.voters span{font-size:13px;background:var(--tint);padding:4px 10px;border-radius:999px}
+.lock{max-width:380px;padding:8px 0 24px}
+.lock label,.who label{display:block;font-weight:600;margin-bottom:8px}
+.lock .f{display:flex;gap:10px}
+input.txt{flex:1;min-width:0;width:100%;font:inherit;padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink)}
+input.txt:focus-visible{outline:3px solid var(--mustard);outline-offset:1px}
+.who{max-width:420px;margin:0 0 20px}
+.who .hint{font-size:13px;color:var(--muted);margin:6px 0 0}
+.err{color:var(--chili);font-size:14px;min-height:1.5em;margin:8px 0 0}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.done{text-align:center;padding:48px 0}
+.done h2{font-size:30px;color:var(--farm)}
+[hidden]{display:none!important}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,1fr);gap:10px}.dish .en{display:none}.row{grid-template-columns:22px 52px 1fr auto}.row img{width:52px;height:40px}}
+@media (prefers-reduced-motion:no-preference){.dish{transition:border-color .15s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>ไปกินจินเจอร์ฟาร์มกัน! เลือกเมนูที่อยากกิน</h1>
+    <p class="lede">เลือก 2 จานที่อยากกินที่สุด มาช่วยกันเลือกนะคะ</p>
+    <div class="rule"><span>เลือกได้ 2 จาน</span><span>🌶 = เผ็ด · ⭐ = ร้านแนะนำ</span></div>
+  </header>
+
+  <!-- ===== หน้าโหวต ===== -->
+  <section id="p-vote">
+    <div class="who">
+      <label for="name">ชื่อ-นามสกุลจริง</label>
+      <input class="txt" id="name" autocomplete="name" maxlength="60" placeholder="เช่น สมชาย ใจดี">
+      <p class="hint">ใช้ชื่อเดิมโหวตอีกครั้ง = แก้ไขโหวตเดิม</p>
+    </div>
+    <p class="note warn" id="msg" hidden></p>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="p-done" class="done" hidden>
+    <h2>ส่งโหวตแล้ว ขอบคุณค่ะ!</h2>
+    <p id="done-text"></p>
+    <button class="btn ghost" id="again">แก้ไขโหวต</button>
+  </section>
+
+  <!-- ===== หน้า Admin (เปิดด้วย #admin ท้ายลิงก์) ===== -->
+  <section id="p-admin" hidden>
+    <form class="lock" id="lock">
+      <h2>Admin</h2>
+      <label for="pw">ใส่รหัส Admin</label>
+      <div class="f"><input class="txt" type="password" id="pw" autocomplete="current-password"><button class="btn" id="unlock" type="submit">เข้าสู่ระบบ</button></div>
+      <p class="err" id="lock-err" role="alert"></p>
+    </form>
+    <div id="res" hidden>
+      <h2>Admin</h2>
+      <div class="sum">
+        <div><b id="s-voters">0</b>คนโหวตแล้ว</div>
+        <div><b id="s-votes">0</b>โหวตทั้งหมด</div>
+      </div>
+      <button class="btn ghost" id="refresh">โหลดผลล่าสุด</button>
+      <p class="note" id="r-empty" hidden>ยังไม่มีใครโหวต</p>
+      <div id="r-body" hidden>
+        <h2>เมนูที่ทุกคนเลือกตรงกัน</h2>
+        <p class="sub">8 อันดับแรก (ไฮไลต์) คือเมนูหลักที่ควรใส่ในทุกชุด</p>
+        <ol class="rank" id="rank"></ol>
+        <h2>รายชื่อและเมนูที่เลือก</h2>
+        <div class="tablewrap"><table><thead><tr><th>ชื่อ</th><th>เมนูที่ 1</th><th>เมนูที่ 2</th><th>เวลา</th></tr></thead><tbody id="tbl"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="dock" id="dock">
+  <div class="dock-in">
+    <div class="picked" id="picked"></div>
+    <button class="btn ghost" id="clear" hidden>ล้าง</button>
+    <button class="btn" id="save" disabled>ส่งโหวต</button>
+  </div>
+</div>
+
+<script>
+/* ===== ตั้งค่า: วาง Web app URL จาก Google Apps Script ตรงนี้ ===== */
+const API_URL = "https://script.google.com/macros/s/AKfycbxbikrIElgi7P8JR1viFZnN5ilgNp4tOf9mDnN3T8VXfCm5MuV_JNinp81yHl9wi3e0yg/exec";
+
+const DISHES = [{"id": "wings", "th": "ปีกไก่ทอดสมุนไพร", "en": "Fried chicken wings, crispy herbs", "price": 175, "cat": "starter", "spicy": 0, "rec": 0}, {"id": "porkbelly_fs", "th": "สามชั้นทอดน้ำปลา", "en": "Fish-sauce fried pork belly", "price": 175, "cat": "starter", "spicy": 0, "rec": 0}, {"id": "prawncake", "th": "ทอดมันกุ้ง", "en": "Deep-fried prawn cakes", "price": 275, "cat": "starter", "spicy": 0, "rec": 0}, {"id": "freshroll", "th": "ปอเปี๊ยะสดกุ้ง", "en": "Fresh prawn spring rolls", "price": 175, "cat": "starter", "spicy": 0, "rec": 1}, {"id": "papaya_egg", "th": "ตำไทยไข่เค็ม", "en": "Papaya salad, salted egg", "price": 125, "cat": "salad", "spicy": 1, "rec": 0}, {"id": "luangprabang", "th": "ส้มตำหลวงพระบาง", "en": "Luang Prabang papaya salad", "price": 155, "cat": "salad", "spicy": 1, "rec": 1}, {"id": "corn", "th": "ตำข้าวโพดไข่เค็ม", "en": "Spicy corn salad, salted egg", "price": 135, "cat": "salad", "spicy": 1, "rec": 0}, {"id": "eggsalad", "th": "ยำไข่ดาว", "en": "Fried egg salad", "price": 185, "cat": "salad", "spicy": 0, "rec": 0}, {"id": "mackerelnoodle", "th": "ยำขนมจีนข้าวกล้องปลาทู", "en": "Brown rice noodle salad, mackerel", "price": 195, "cat": "salad", "spicy": 2, "rec": 1}, {"id": "larb", "th": "ลาบอีสาน", "en": "Isaan minced pork larb", "price": 195, "cat": "salad", "spicy": 1, "rec": 0}, {"id": "makwaen", "th": "หมูหมักมะแขว่น", "en": "Fried pork with makwaen pepper", "price": 350, "cat": "main", "spicy": 0, "rec": 1}, {"id": "chiangraichicken", "th": "ไก่ทอดเชียงราย", "en": "Chiang Rai fried chicken", "price": 250, "cat": "main", "spicy": 0, "rec": 0}, {"id": "plara_pork", "th": "หมูทอดปลาร้า", "en": "Fried pork with pla-ra", "price": 250, "cat": "main", "spicy": 0, "rec": 0}, {"id": "omelet", "th": "ไข่เจียวหมูสับ", "en": "Minced pork omelet", "price": 135, "cat": "main", "spicy": 0, "rec": 0}, {"id": "pumpkin", "th": "ผัดฟักทองโหระพาใส่ไข่", "en": "Pumpkin, basil and egg", "price": 155, "cat": "veg", "spicy": 0, "rec": 0}, {"id": "cabbage", "th": "กะหล่ำปลีทอดน้ำปลาเบคอน", "en": "Cabbage, fish sauce, bacon", "price": 155, "cat": "veg", "spicy": 0, "rec": 0}, {"id": "cashew", "th": "ไก่ผัดเม็ดมะม่วง", "en": "Chicken with cashew nuts", "price": 225, "cat": "main", "spicy": 0, "rec": 0}, {"id": "mackerelbasil", "th": "ปลาทูผัดโหระพา", "en": "Mackerel with sweet basil", "price": 225, "cat": "main", "spicy": 0, "rec": 0}, {"id": "tomsaep", "th": "ต้มแซ่บหมูใบกะเพรา", "en": "Spicy clear pork soup", "price": 225, "cat": "soup", "spicy": 1, "rec": 0}, {"id": "tomyum", "th": "ต้มยำกุ้งน้ำข้น", "en": "Tom yum goong", "price": 290, "cat": "soup", "spicy": 0, "rec": 0}, {"id": "hanglay", "th": "แกงฮังเลหมู", "en": "Northern Hang Lay pork curry", "price": 265, "cat": "soup", "spicy": 0, "rec": 0}, {"id": "jackfruit", "th": "แกงขนุนหมูสามชั้น", "en": "Young jackfruit curry, pork belly", "price": 195, "cat": "soup", "spicy": 0, "rec": 0}, {"id": "grilledchicken", "th": "ไก่ย่างหมักสมุนไพร", "en": "Grilled herb chicken, jaew", "price": 250, "cat": "main", "spicy": 0, "rec": 1}, {"id": "grilledpork", "th": "รวมย่างหมู 2 จิ้ม", "en": "Grilled pork jowl & belly", "price": 350, "cat": "main", "spicy": 0, "rec": 0}, {"id": "namprikong", "th": "น้ำพริกอ่อง", "en": "Nam prik ong with vegetables", "price": 175, "cat": "veg", "spicy": 1, "rec": 0}, {"id": "trainrice", "th": "ข้าวผัดรถไฟปลาสลิด", "en": "Fried rice, crispy gourami", "price": 175, "cat": "rice", "spicy": 0, "rec": 1}, {"id": "khaoklukmackerel", "th": "ข้าวคลุกปลาทู", "en": "Fried rice with mackerel", "price": 175, "cat": "rice", "spicy": 0, "rec": 1}];
+const CATS = [["all","ทั้งหมด"],["starter","ทานเล่น"],["salad","ตำ / ยำ / ลาบ"],["main","ทอด / ผัด / ย่าง"],["veg","ผัก / น้ำพริก"],["soup","ต้ม / แกง"],["rice","ข้าวผัด"]];
+const byId = Object.fromEntries(DISHES.map(d=>[d.id,d]));
+const img = id => "images/"+id+".jpg";
+const $ = s => document.querySelector(s);
+let cat="all", picks=[], saving=false;
+
+const store={get(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+const saved=store.get("gfk-vote");
+if(saved){ $("#name").value=saved.name||""; picks=(saved.picks||[]).filter(p=>byId[p]).slice(0,2); }
+
+async function api(payload){
+  if(!API_URL.startsWith("https://")) throw new Error("not_configured");
+  const r=await fetch(API_URL,{method:"POST",body:JSON.stringify(payload)});
+  return r.json();
+}
+
+/* ---------- Vote ---------- */
+function renderChips(){
+  $("#chips").replaceChildren(...CATS.map(([k,l])=>{const b=document.createElement("button");b.className="chip";b.textContent=l;b.setAttribute("aria-pressed",cat===k);b.onclick=()=>{cat=k;renderChips();renderGrid();};return b;}));
+}
+function renderGrid(){
+  const list=DISHES.filter(d=>cat==="all"||d.cat===cat);
+  $("#grid").replaceChildren(...list.map(d=>{
+    const b=document.createElement("button");b.className="dish";
+    const i=picks.indexOf(d.id);
+    b.setAttribute("aria-pressed",i>=0);
+    if(i<0&&picks.length>=2)b.setAttribute("aria-disabled","true");
+    b.innerHTML='<img alt="" loading="lazy"><span class="badge"></span><span class="meta"><span class="th"></span><span class="en"></span><span class="price"></span></span>';
+    b.querySelector("img").src=img(d.id);
+    b.querySelector(".badge").textContent=i>=0?i+1:"";
+    b.querySelector(".th").textContent=d.th;
+    b.querySelector(".en").textContent=d.en;
+    const p=b.querySelector(".price");p.textContent=d.price+" บาท";
+    if(d.spicy){const t=document.createElement("span");t.className="tag";t.textContent="🌶".repeat(d.spicy);p.append(t);}
+    if(d.rec){const t=document.createElement("span");t.className="tag";t.textContent="⭐";p.append(t);}
+    b.setAttribute("aria-label",d.th+" "+d.price+" บาท"+(i>=0?" เลือกแล้ว":""));
+    b.onclick=()=>toggle(d.id);
+    return b;}));
+}
+function toggle(id){
+  const i=picks.indexOf(id);
+  if(i>=0)picks.splice(i,1); else if(picks.length<2)picks.push(id); else{picks.shift();picks.push(id);}
+  renderGrid();renderDock();
+}
+function renderDock(){
+  const el=$("#picked");el.replaceChildren();
+  if(!picks.length){el.append("ยังไม่ได้เลือก · เลือกอีก ");const b=document.createElement("b");b.textContent="2";el.append(b," จาน");}
+  else{const b=document.createElement("b");b.textContent=picks.map(p=>byId[p].th).join(" + ");el.append(b);if(picks.length<2)el.append(" · เลือกอีก 1 จาน");}
+  $("#clear").hidden=!picks.length;
+  $("#save").disabled=saving||picks.length!==2;
+  $("#save").textContent=saving?"กำลังส่ง…":"ส่งโหวต";
+}
+function showMsg(t){$("#msg").textContent=t;$("#msg").hidden=!t;}
+$("#clear").onclick=()=>{picks=[];renderGrid();renderDock();};
+$("#save").onclick=async()=>{
+  const name=$("#name").value.replace(/\s+/g," ").trim();
+  if(name.length<2){showMsg("กรุณาใส่ชื่อ-นามสกุลจริงก่อนส่งโหวต");$("#name").focus();window.scrollTo({top:0});return;}
+  showMsg("");saving=true;renderDock();
+  try{
+    const res=await api({action:"vote",name,picks});
+    if(!res.ok)throw new Error(res.error||"error");
+    store.set("gfk-vote",{name,picks});
+    $("#done-text").textContent=name+" เลือก: "+picks.map(p=>byId[p].th).join(" + ");
+    $("#p-vote").hidden=true;$("#dock").hidden=true;$("#p-done").hidden=false;window.scrollTo({top:0});
+  }catch(e){
+    showMsg(e.message==="not_configured"?"ระบบยังไม่ได้เชื่อมต่อ Google Sheet (ผู้จัดต้องใส่ API_URL)":e.message==="bad_name"?"ชื่อต้องยาว 2-60 ตัวอักษร":"ส่งโหวตไม่สำเร็จ ลองกดส่งอีกครั้ง");
+  }
+  saving=false;renderDock();
+};
+$("#again").onclick=()=>{$("#p-done").hidden=true;$("#p-vote").hidden=false;$("#dock").hidden=false;};
+
+/* ---------- Admin ---------- */
+let adminPw="";
+async function loadResults(){
+  const res=await api({action:"results",password:adminPw});
+  if(!res.ok)throw new Error(res.error||"error");
+  const voters=res.voters||[];
+  const tally={};
+  voters.forEach(v=>v.picks.forEach(p=>{if(byId[p])tally[p]=(tally[p]||0)+1;}));
+  const total=Object.values(tally).reduce((a,b)=>a+b,0);
+  $("#s-voters").textContent=voters.length;$("#s-votes").textContent=total;
+  $("#r-empty").hidden=voters.length>0;$("#r-body").hidden=!voters.length;
+  const ranked=Object.entries(tally).sort((a,b)=>b[1]-a[1]||byId[a[0]].price-byId[b[0]].price);
+  const max=ranked.length?ranked[0][1]:1;
+  $("#rank").replaceChildren(...ranked.map(([id,n],i)=>{
+    const d=byId[id],li=document.createElement("li");li.className="row"+(i<8?" top":"");
+    li.innerHTML='<span class="n"></span><img alt=""><div><div class="nm"></div><div class="track"><div class="fill"></div></div></div><span class="v"></span>';
+    li.querySelector(".n").textContent=i+1;li.querySelector("img").src=img(id);
+    const nm=li.querySelector(".nm");nm.textContent=d.th;const s=document.createElement("small");s.textContent=d.price+" บาท";nm.append(s);
+    li.querySelector(".fill").style.width=(n/max*100)+"%";li.querySelector(".v").textContent=n+" โหวต";
+    return li;}));
+  $("#tbl").replaceChildren(...voters.map(v=>{
+    const tr=document.createElement("tr");
+    const t=new Date(v.at);
+    [v.name,byId[v.picks[0]]?.th||v.picks[0],byId[v.picks[1]]?.th||v.picks[1],isNaN(t)?"":t.toLocaleString("th-TH",{dateStyle:"short",timeStyle:"short"})]
+      .forEach(x=>{const td=document.createElement("td");td.textContent=x;tr.append(td);});
+    return tr;}));
+}
+$("#lock").onsubmit=async e=>{
+  e.preventDefault();$("#lock-err").textContent="";
+  adminPw=$("#pw").value;$("#unlock").disabled=true;
+  try{await loadResults();$("#lock").hidden=true;$("#res").hidden=false;$("#pw").value="";}
+  catch(err){$("#lock-err").textContent=err.message==="wrong_password"?"รหัสไม่ถูกต้อง":err.message==="no_password_set"?"ยังไม่ได้ตั้ง ADMIN_PASSWORD ใน Apps Script":err.message==="not_configured"?"ยังไม่ได้ใส่ API_URL":"โหลดผลไม่สำเร็จ ลองอีกครั้ง";}
+  $("#unlock").disabled=false;
+};
+$("#refresh").onclick=async()=>{$("#refresh").disabled=true;try{await loadResults();}catch(e){}$("#refresh").disabled=false;};
+
+function route(){
+  const admin=location.hash==="#admin";
+  $("#p-admin").hidden=!admin;$("#p-vote").hidden=admin;$("#p-done").hidden=true;$("#dock").hidden=admin;
+  document.querySelector(".lede").hidden=admin;document.querySelector(".rule").hidden=admin;
+}
+window.addEventListener("hashchange",route);
+renderChips();renderGrid();renderDock();route();
+</script>
+</body>
+</html>
